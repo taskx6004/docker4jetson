@@ -23,4 +23,4 @@ CMD ["v2ray", "-config=/etc/v2ray/config.json"]
 #USE
 #copy your config.json to your host machine
 #run command on local shell to build container:
-#sudo docker run -it --name v2ray -v /etc/v2ray:/etc/v2ray -p 1080:1080 jetson/v2ray  v2ray -config=/etc/v2ray/config.json
+#sudo docker run -d --name v2ray -v /etc/v2ray:/etc/v2ray -p 1080:1080 jetson/v2ray v2ray -config=/etc/v2ray/config.json
