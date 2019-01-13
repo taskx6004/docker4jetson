@@ -1,0 +1,26 @@
+FROM ubuntu:xenial
+
+RUN apt-get update
+RUN apt-get install curl -y
+RUN apt-get install -y ca-certificates
+RUN update-ca-certificates
+RUN curl -L -o /tmp/go.sh https://install.direct/go.sh
+#go.sh has arch check and aarch64 is pre-built ready.
+RUN chmod +x /tmp/go.sh
+RUN /tmp/go.sh
+
+#COPY --from=builder /usr/bin/v2ray/v2ray /usr/bin/v2ray/
+#COPY --from=builder /usr/bin/v2ray/v2ctl /usr/bin/v2ray/
+#COPY --from=builder /usr/bin/v2ray/geoip.dat /usr/bin/v2ray/
+#COPY --from=builder /usr/bin/v2ray/geosite.dat /usr/bin/v2ray/
+#COPY config.json /etc/v2ray/config.json
+
+#RUN set -ex && mkdir /var/log/v2ray/
+ENV PATH /usr/bin/v2ray:$PATH
+
+CMD ["v2ray", "-config=/etc/v2ray/config.json"]
+
+#USE
+#copy your config.json to your host machine
+#run command on local shell to build container:
+#sudo docker run -it --name v2ray -v /etc/v2ray:/etc/v2ray -p 1080:1080 jetson/v2ray  v2ray -config=/etc/v2ray/config.json
