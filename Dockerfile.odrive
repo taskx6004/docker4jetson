@@ -1,0 +1,28 @@
+FROM ros:kinetic-perception-xenial
+
+RUN apt-get update && \
+    apt-get install -y -V \
+    libxml2-dev \
+    libxslt-dev \
+    python-dev \
+    wget \
+    curl \
+    nano \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pip, numpy & cython python2&3
+RUN  wget -q https://bootstrap.pypa.io/get-pip.py && \
+     python3 get-pip.py && \
+     pip3 install --upgrade pip
+
+RUN python2 get-pip.py && \
+    rm get-pip.py
+RUN pip2 install --upgrade pip && \
+    pip2 install monotonic
+
+COPY ./91-odrive.rules /etc/udev/rules.d/
+COPY ./ODrive /home/ODrive
+WORKDIR /home/ODrive/tools/
+RUN python2 setup.py sdist && \
+    pip2 install dist/odrive-0.0.1.dev0.tar.gz
+#TODO python cryptograpy lib warning for being too old
